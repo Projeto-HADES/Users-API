@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -23,15 +25,20 @@ public class SecurityConfiguration {
         this.securityFilter = securityFilter;
     }
 
+    private static final List<String> PERMITTED_ROUTES = List.of(
+            "/adm/create",
+            "/adm/login",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
+    );
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/adm/create").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/adm/login").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, PERMITTED_ROUTES.toArray(new String[0])).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

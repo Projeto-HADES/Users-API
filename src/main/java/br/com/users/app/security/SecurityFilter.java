@@ -15,19 +15,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
 
+    private static final List<String> EXCLUDE_URIS = List.of(
+            "/swagger",
+            "/v3/api-docs",
+            "/swagger-ui/index.html",
+            "/adm/create",
+            "/adm/login"
+    );
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException, AuthenticationException {
-        if (request.getRequestURI().startsWith("/swagger")
-                || request.getRequestURI().startsWith("/v3/api-docs")
-                || request.getRequestURI().startsWith("/swagger-ui/index.html")
-                || request.getRequestURI().startsWith("/adm/create")
-                || request.getRequestURI().startsWith("/adm/login")) {
+        if (shouldExcludeUri(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,6 +49,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean shouldExcludeUri(String uri) {
+        return EXCLUDE_URIS.stream().anyMatch(uri::startsWith);
     }
 
     private String recoverToken(HttpServletRequest request) {
