@@ -2,14 +2,14 @@ package br.com.users.app.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -48,4 +48,7 @@ public class UserEntity {
 
     @Column(name = "number", length = 255, nullable = false)
     private String number;
+
+    @Column(name = "role", length = 255, nullable = false)
+    private String role;
 }

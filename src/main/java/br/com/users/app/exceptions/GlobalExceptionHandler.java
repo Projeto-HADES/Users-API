@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDto> handleGlobalException(Exception ex) {
+        ex.printStackTrace();
         ExceptionResponseDto response = new ExceptionResponseDto();
         response.setMessage("Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
