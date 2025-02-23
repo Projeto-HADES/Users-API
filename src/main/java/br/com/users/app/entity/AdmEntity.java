@@ -1,0 +1,26 @@
+package br.com.users.app.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "adms")
+@Getter @Setter
+public class AdmEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "name", length = 255, nullable = false)
+    private String name;
+
+    @Column(name = "email", length = 255, nullable = false) @Email
+    private String email;
+
+    @Column(name = "password", length = 255, nullable = false)
+    private String password;
+}
