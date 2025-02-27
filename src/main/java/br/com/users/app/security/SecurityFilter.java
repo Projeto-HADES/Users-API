@@ -36,6 +36,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         String token = this.recoverToken(request);
 
         if (token != null) {

@@ -16,13 +16,13 @@ public class SwaggerConfig {
                         .title("API Documentation")
                         .version("1.0")
                         .description("Documentação da API Manager"))
-                .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
+                .addSecurityItem(new SecurityRequirement().addList("x-auth"))
                 .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("BearerAuth",
+                        .addSecuritySchemes("x-auth",
                                 new SecurityScheme()
-                                        .name("BearerAuth")
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                                        .name("x-auth")
+                                        .type(SecurityScheme.Type.APIKEY)
+                                        .in(SecurityScheme.In.HEADER)
+                        ));
     }
 }
