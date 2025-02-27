@@ -26,4 +26,6 @@ public class AdmEntity {
 
     @Column(name = "role", length = 255, nullable = false)
     private String role;
+
+    public AdmEntity(UUID admId) {}
 }
